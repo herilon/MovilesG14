@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +35,19 @@ class ToDoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_to_do, container, false)
+        val fragmento: View = inflater.inflate(R.layout.fragment_to_do, container, false)
+        val detail1: Button = fragmento.findViewById(R.id.btn_detail_1)
+        detail1.setOnClickListener {
+            val datos = Bundle()
+            datos.putString("tarea", "Ir al supermercado")
+            datos.putString("hora", "10:00")
+            datos.putString("lugar", "Exito")
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.fragmentContainerView, DetailFragment::class.java, datos, "detail")
+                ?.addToBackStack("")
+                ?.commit()
+        }
+        return fragmento
     }
 
     companion object {
