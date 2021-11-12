@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">App Grupo 14</string>
+    <string name="text_username">Usuario</string>
+    <string name="text_username_hint">usuario@dominio.com</string>
+    <string name="text_password">Contraseña</string>
+    <string name="text_password_hint">Su contraseña</string>
+    <string name="button_login">Iniciar sesión</string>
+    <string name="text_welcome">Bienvenido</string>
+    <string name="text_introduction">Introducción</string>
+    <string name="text_lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+        in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</string>
+    <string name="text_error">ERROR</string>
+    <string name="text_error_message">Usuario o Contraseña incorrectos</string>
+    <string name="text_action_search">Buscar</string>
+    <string name="text_action_settings">Configuración</string>
+    <string name="text_action_logout">Cerrar sesion</string>
+
+</resources>
