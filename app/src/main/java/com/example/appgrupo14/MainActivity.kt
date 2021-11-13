@@ -31,7 +31,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.action_search -> {
-                Toast.makeText(this, R.string.text_action_search, Toast.LENGTH_LONG).show()
+                val intento = Intent(this, DrawerActivity::class.java)
+                startActivity(intento)
                 return true
             }
             R.id.action_settings -> {

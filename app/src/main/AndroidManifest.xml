@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppGrupo14">
         <activity
+            android:name=".DrawerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_drawer"
+            android:theme="@style/Theme.AppGrupo14.NoActionBar" />
+        <activity
             android:name=".ToDoActivity"
             android:exported="false" />
         <activity
