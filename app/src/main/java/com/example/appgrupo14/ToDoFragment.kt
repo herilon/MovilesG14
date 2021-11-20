@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,6 +58,22 @@ class ToDoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val recyclerTodoList: RecyclerView = view.findViewById(R.id.recyclerToooList)
+        var datos: ArrayList<Task> = ArrayList()
+        datos.add(Task("Ir al supermercado", "10:00", "Exito"))
+        datos.add(Task("Llevar carro a mantenimiento", "12:00", "Taller"))
+        datos.add(Task("Ir a lavanderia", "13:00", "Lavaseco"))
+        var taskAdapter = TaskAdapter(datos){
+            val datos = Bundle()
+            datos.putString("tarea", it.task)
+            datos.putString("hora", it.time)
+            datos.putString("lugar", it.place)
+            Navigation.findNavController(view).navigate(R.id.nav_detail,datos)
+        }
+        recyclerTodoList.setHasFixedSize(true)
+        recyclerTodoList.adapter = taskAdapter
+        recyclerTodoList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+/*
         val detail1: Button = view.findViewById(R.id.btn_detail_1)
         detail1.setOnClickListener {
             val datos = Bundle()
@@ -64,6 +82,7 @@ class ToDoFragment : Fragment() {
             datos.putString("lugar", "Exito")
             Navigation.findNavController(it).navigate(R.id.nav_detail,datos)
         }
+*/
     }
 
     companion object {
