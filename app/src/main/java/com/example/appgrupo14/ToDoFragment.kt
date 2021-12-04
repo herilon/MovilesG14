@@ -9,6 +9,12 @@ import android.widget.Button
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import com.example.appgrupo14.room_database.ToDoDAO
+import com.example.appgrupo14.room_database.ToDoDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,19 +66,73 @@ class ToDoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val recyclerTodoList: RecyclerView = view.findViewById(R.id.recyclerToooList)
         var datos: ArrayList<Task> = ArrayList()
+
+//  Conexion con Firebase
+
+        val dbFirestore = FirebaseFirestore.getInstance()
+        dbFirestore.collection("ToDo")
+            .get().addOnSuccessListener {
+                for (todo in it) {
+                    datos.add(
+                        Task(
+                            0, todo.get("title") as String,
+                            todo.get("time") as String,
+                            todo.get("place") as String
+                        )
+                    )
+                }
+                var taskAdapter = TaskAdapter(datos) {
+                    val datos = Bundle()
+                    datos.putInt("id", it.id)
+                    Navigation.findNavController(view).navigate(R.id.nav_detail, datos)
+                }
+                recyclerTodoList.setHasFixedSize(true)
+                recyclerTodoList.adapter = taskAdapter
+                recyclerTodoList.addItemDecoration(
+                    DividerItemDecoration(
+                        context,
+                        DividerItemDecoration.VERTICAL
+                    )
+                )
+            }
+
+
+
+/*
         datos.add(Task("Ir al supermercado", "10:00", "Exito"))
         datos.add(Task("Llevar carro a mantenimiento", "12:00", "Taller"))
         datos.add(Task("Ir a lavanderia", "13:00", "Lavaseco"))
+*/
+
+//Codigo para base de datos local
+/*
+        val room: ToDoDatabase = Room
+            .databaseBuilder(context?.applicationContext!!, ToDoDatabase::class.java, "ToDoDatabase")
+            .build()
+        var toDoDAO: ToDoDAO = room.todoDao()
+        runBlocking {
+            launch {
+                var result =  toDoDAO.getAllTasks()
+                for (todo in result){
+                    datos.add(Task(todo.id, todo.title, todo.time, todo.place))
+                }
+            }
+        }
         var taskAdapter = TaskAdapter(datos){
             val datos = Bundle()
-            datos.putString("tarea", it.task)
+            datos.putInt("id", it.id)
+*/
+/*
             datos.putString("hora", it.time)
             datos.putString("lugar", it.place)
+*/
+/*
             Navigation.findNavController(view).navigate(R.id.nav_detail,datos)
         }
         recyclerTodoList.setHasFixedSize(true)
         recyclerTodoList.adapter = taskAdapter
         recyclerTodoList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+*/
 /*
         val detail1: Button = view.findViewById(R.id.btn_detail_1)
         detail1.setOnClickListener {

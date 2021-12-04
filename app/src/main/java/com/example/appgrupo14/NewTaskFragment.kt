@@ -6,6 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.navigation.Navigation
+import androidx.room.Room
+import com.example.appgrupo14.room_database.ToDo
+import com.example.appgrupo14.room_database.ToDoDAO
+import com.example.appgrupo14.room_database.ToDoDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,15 +53,41 @@ class NewTaskFragment : Fragment() {
         val edtPlace: EditText = view.findViewById(R.id.edtPlace)
 //        var tareas = arrayOf("Estudiar", "Mercar", "Hacer ejercicio")
         var tareas: ArrayList<Task> = ArrayList()
-        tareas.add(Task("Mercar", "12", "Exito"))
-        tareas.add(Task("Estudiar", "16", "Universidad"))
+        tareas.add(Task(1,"Mercar", "12", "Exito"))
+        tareas.add(Task(2,"Estudiar", "16", "Universidad"))
+        tareas.add(Task(3,"Hacer ejercicio", "06:00", "Gimnasio"))
+        tareas.add(Task(4,"Trabajar", "08:00", "Empresa"))
         val taskAdapter = ArrayAdapter(context?.applicationContext!!, android.R.layout.simple_spinner_item, tareas)
         taskAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spiTask.adapter = taskAdapter
         val btnNewTask: Button = view.findViewById(R.id.btnNewTask)
         btnNewTask.setOnClickListener {
             var task = spiTask.selectedItem as Task
-            Toast.makeText(context?.applicationContext, task.place, Toast.LENGTH_LONG).show()
+            val room: ToDoDatabase = Room
+                .databaseBuilder(context?.applicationContext!!, ToDoDatabase::class.java, "ToDoDatabase")
+                .build()
+            val taskToDo: ToDo = ToDo(0, task.task, edtTime.text.toString(), edtPlace.text.toString())
+            var toDoDAO: ToDoDAO = room.todoDao()
+
+            val dbFirebase = FirebaseFirestore.getInstance()
+
+            runBlocking {
+                launch {
+                    var result = toDoDAO.insertTask(taskToDo)
+                    if (result != -1L){
+                        dbFirebase.collection("ToDo")
+                            .document(result.toString())
+                            .set(
+                                hashMapOf("title" to task.task,
+                                "time" to edtTime.text.toString(),
+                                "place" to edtPlace.text.toString())
+                            )
+                    }
+//                    Toast.makeText(context?.applicationContext, "" + result, Toast.LENGTH_LONG).show()
+                }
+            }
+            Navigation.findNavController(view).navigate(R.id.nav_todo)
+//            Toast.makeText(context?.applicationContext, task.place, Toast.LENGTH_LONG).show()
 //            Toast.makeText(context?.applicationContext, spiTask.selectedItem.toString(), Toast.LENGTH_LONG).show()
         }
     }

@@ -6,6 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.room.Room
+import com.example.appgrupo14.room_database.ToDoDAO
+import com.example.appgrupo14.room_database.ToDoDatabase
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,13 +41,36 @@ class DetailFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val fragmento: View = inflater.inflate(R.layout.fragment_detail, container, false)
+/*
         var txvTarea: TextView = fragmento.findViewById(R.id.textViewTarea)
         var txvHora: TextView = fragmento.findViewById(R.id.textViewHora)
         var txvLugar: TextView = fragmento.findViewById(R.id.textViewLugar)
         txvTarea.text = requireArguments().getString("tarea")
         txvHora.text = requireArguments().getString("hora")
         txvLugar.text = requireArguments().getString("lugar")
+*/
         return fragmento
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        var txvTarea: TextView = view.findViewById(R.id.textViewTarea)
+        var txvHora: TextView = view.findViewById(R.id.textViewHora)
+        var txvLugar: TextView = view.findViewById(R.id.textViewLugar)
+        var id = requireArguments().getInt("id")
+        val room: ToDoDatabase = Room
+            .databaseBuilder(context?.applicationContext!!, ToDoDatabase::class.java, "ToDoDatabase")
+            .build()
+        var toDoDAO: ToDoDAO = room.todoDao()
+        runBlocking {
+            launch {
+                var result = toDoDAO.findById(id)
+                txvTarea.text = result.title
+                txvHora.text = result.time
+                txvLugar.text = result.place
+            }
+        }
+
     }
 
     companion object {

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "711953125510",
+    "project_id": "to-do-g14",
+    "storage_bucket": "to-do-g14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711953125510:android:5d096b03acf328ced40107",
+        "android_client_info": {
+          "package_name": "com.example.appgrupo14"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "711953125510-aqkphr246vepcmqors4j2st7j889onua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvc5-Jz3s7KGjzPCG_pRwskiNwrREhfKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "711953125510-aqkphr246vepcmqors4j2st7j889onua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
