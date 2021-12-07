@@ -71,11 +71,13 @@ class ToDoFragment : Fragment() {
 
         val dbFirestore = FirebaseFirestore.getInstance()
         dbFirestore.collection("ToDo")
+            .whereEqualTo("title", "Mercar")
             .get().addOnSuccessListener {
                 for (todo in it) {
+                    var id = todo.id
                     datos.add(
                         Task(
-                            0, todo.get("title") as String,
+                            id.toInt(), todo.get("title") as String,
                             todo.get("time") as String,
                             todo.get("place") as String
                         )

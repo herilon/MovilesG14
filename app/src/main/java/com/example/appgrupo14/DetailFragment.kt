@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.room.Room
 import com.example.appgrupo14.room_database.ToDoDAO
 import com.example.appgrupo14.room_database.ToDoDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -57,7 +58,16 @@ class DetailFragment : Fragment() {
         var txvTarea: TextView = view.findViewById(R.id.textViewTarea)
         var txvHora: TextView = view.findViewById(R.id.textViewHora)
         var txvLugar: TextView = view.findViewById(R.id.textViewLugar)
-        var id = requireArguments().getInt("id")
+        var id = requireArguments().getInt("id").toString()
+        val dbFirebase = FirebaseFirestore.getInstance()
+        dbFirebase.collection("ToDo")
+            .document(id)
+            .get().addOnSuccessListener {
+                txvTarea.text = it.get("title") as String
+                txvHora.text = it.get("time") as String
+                txvLugar.text = it.get("place") as String
+            }
+/*
         val room: ToDoDatabase = Room
             .databaseBuilder(context?.applicationContext!!, ToDoDatabase::class.java, "ToDoDatabase")
             .build()
@@ -70,6 +80,7 @@ class DetailFragment : Fragment() {
                 txvLugar.text = result.place
             }
         }
+*/
 
     }
 
